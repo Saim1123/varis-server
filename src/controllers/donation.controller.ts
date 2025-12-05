@@ -16,3 +16,14 @@ export const getDonations = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const getAllDonationsAdmin = async (req: Request, res: Response) => {
+    try {
+        const donations = await DonationService.getAllDonationsWithDetails();
+
+        res.status(200).json(donations);
+    } catch (error) {
+        console.error("Error fetching donations:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
