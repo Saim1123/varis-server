@@ -67,3 +67,30 @@ export const loginUser = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+export const updateUserProfile = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id;
+        const { country, city, address } = req.body;
+
+        if (!country && !city && !address) {
+            return res.status(400).json({ error: "At least one field (country, city, or address) is required" });
+        }
+
+        const updateData: any = {};
+        if (country !== undefined) updateData.country = country;
+        if (city !== undefined) updateData.city = city;
+        if (address !== undefined) updateData.address = address;
+
+        const updatedUser = await UserService.updateUserProfile(userId, updateData);
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+    } catch (error) {
+        console.error("Error updating user profile:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

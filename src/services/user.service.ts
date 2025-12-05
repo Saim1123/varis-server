@@ -44,3 +44,13 @@ export const findUserByEmail = async (email: string) => {
     const user = await User.findOne({ email })
     return user;
 }
+
+export const updateUserProfile = async (userId: string, updateData: { country?: string; city?: string; address?: string }) => {
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    ).select("-password -createdAt");
+    
+    return user;
+}
