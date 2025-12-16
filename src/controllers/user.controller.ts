@@ -68,6 +68,26 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 }
 
+export const validateToken = async (req: Request, res: Response) => {
+    try {
+        const userId = (req as any).user.id;
+        
+        const user = await UserService.getUserById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Token is valid",
+            user: user
+        });
+    } catch (error) {
+        console.error("Error validating token:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 export const updateUserProfile = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
