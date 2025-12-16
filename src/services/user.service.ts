@@ -16,7 +16,7 @@ export const createUser = async (userData: any) => {
     return await newUser.save();
 }
 
-export const loginUser = async (userData: any) => {
+export const loginUser = async (userData: {email: string, password: string}) => {
     const user = await User.findOne({ email: userData.email })
     if (!user) {
         return null;
@@ -49,6 +49,21 @@ export const updateUserProfile = async (userId: string, updateData: { country?: 
     const user = await User.findByIdAndUpdate(
         userId,
         { $set: updateData },
+        { new: true, runValidators: true }
+    ).select("-password -createdAt");
+    
+    return user;
+}
+
+export const deleteUser = async (userId: string) => {
+    const user = await User.findByIdAndDelete(userId);
+    return user;
+}
+
+export const updateUserRole = async (userId: string, role: 'admin' | 'user') => {
+    const user = await User.findByIdAndUpdate(
+        userId,
+        { $set: { role } },
         { new: true, runValidators: true }
     ).select("-password -createdAt");
     
