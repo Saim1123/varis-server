@@ -47,3 +47,23 @@ export const createProject = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const deleteProjects = async (req: Request, res: Response) => {
+    try {
+        const { ids } = req.body;
+
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ error: "Array of project IDs is required" });
+        }
+
+        const result = await ProjectService.deleteProjects(ids);
+
+        res.status(200).json({
+            message: `${result.deletedCount} project(s) deleted successfully`,
+            deletedCount: result.deletedCount,
+        });
+    } catch (error) {
+        console.error("Error deleting projects:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};

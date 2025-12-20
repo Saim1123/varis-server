@@ -161,3 +161,28 @@ export const updateUserRole = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+export const deleteUsers = async (req: Request, res: Response) => {
+    try {
+        const { ids } = req.body;
+        const currentUserId = (req as any).user.id;
+
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ error: "Array of user IDs is required" });
+        }
+
+        if (ids.includes(currentUserId)) {
+            return res.status(400).json({ error: "You cannot delete your own account" });
+        }
+
+        const result = await UserService.deleteUsers(ids);
+
+        res.status(200).json({
+            message: `${result.deletedCount} user(s) deleted successfully`,
+            deletedCount: result.deletedCount,
+        });
+    } catch (error) {
+        console.error("Error deleting users:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

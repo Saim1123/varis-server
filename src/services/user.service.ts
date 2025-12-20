@@ -74,3 +74,8 @@ export const updateUserRole = async (userId: string, role: 'admin' | 'user') => 
     
     return user;
 }
+
+export const deleteUsers = async (userIds: string[]) => {
+    const result = await User.deleteMany({ _id: { $in: userIds } });
+    return result;
+}

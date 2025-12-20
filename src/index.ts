@@ -10,7 +10,10 @@ import donationRoutes from "./routes/donation.route"
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: config.CLIENT_URL
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,7 +49,6 @@ const startServer = async () => {
 
         app.listen(config.PORT, () => {
             console.log(`Server is running on http://localhost:${config.PORT}`);
-            console.log(`Environment: ${config.NODE_ENV || 'development'}`);
         });
     } catch (error) {
         console.error("Failed to start server:", error);

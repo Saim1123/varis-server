@@ -15,3 +15,8 @@ export const getProject = async (projectId: string) => {
 export const createProject = async (data: any) => {
     return Project.create(data);
 };
+
+export const deleteProjects = async (projectIds: string[]) => {
+    const result = await Project.deleteMany({ _id: { $in: projectIds } });
+    return result;
+};
