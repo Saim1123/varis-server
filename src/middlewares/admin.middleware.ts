@@ -7,8 +7,6 @@ export const adminMiddleware = (req: AuthRequest, res: Response, next: NextFunct
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        console.log(req.user)
-
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: "Forbidden: Admin access required" });
         }
