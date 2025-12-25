@@ -1,21 +1,28 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
 
-import { config } from "./config/env"
+import { config } from "./config/env";
 import { connectToDB } from "./config/db";
 
-import userRoutes from "./routes/user.route"
-import projectRoutes from "./routes/project.route"
-import donationRoutes from "./routes/donation.route"
+import userRoutes from "./routes/user.route";
+import projectRoutes from "./routes/project.route";
+import donationRoutes from "./routes/donation.route";
 
 const app = express();
 
 app.use(cors({
-    origin: config.CLIENT_URL
+    origin: config.CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(helmet());
+app.use(morgan('dev'));
 
 app.get("/health", (req: Request, res: Response) => {
     res.status(200).json({

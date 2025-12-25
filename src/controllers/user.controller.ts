@@ -19,7 +19,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const { firstName, lastName, email, password, phoneNumber, role } = req.body;
+        const { firstName, lastName, email, password, phoneNumber } = req.body;
 
         if (!firstName || !lastName || !email || !password || !phoneNumber) {
             return res.status(400).json({ error: "All fields are required" });
@@ -30,7 +30,7 @@ export const createUser = async (req: Request, res: Response) => {
             return res.status(409).json({ error: "User already exists" });
         }
 
-        const newUser = await UserService.createUser({ firstName, lastName, email, phoneNumber, password, role })
+        const newUser = await UserService.createUser({ firstName, lastName, email, phoneNumber, password })
 
         res.status(201).json({ message: "User created successfully", user: newUser });
     } catch (error) {
@@ -71,7 +71,7 @@ export const loginUser = async (req: Request, res: Response) => {
 export const validateToken = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).user.id;
-        
+
         const user = await UserService.getUserById(userId);
 
         if (!user) {
