@@ -11,6 +11,11 @@ const ProjectSchema = new mongoose.Schema<ProjectInterface>({
     imageUrl: { type: String, required: true },
     status: { type: String, required: true, default: "pending" },
     donations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Donation" }],
+    expenses: [{
+        description: { type: String, required: true },
+        amount: { type: Number, required: true },
+        date: { type: Date, default: Date.now }
+    }],
     createdAt: { type: Date, default: Date.now },
 })
 

@@ -6,6 +6,12 @@ export const getAllDonations = async () => {
     return Donation.find().sort({ createdAt: -1 });
 };
 
+export const getUserDonations = async (userId: string) => {
+    return Donation.find({ userId })
+        .populate('projectId', 'title imageUrl')
+        .sort({ createdAt: -1 });
+};
+
 export const getAllDonationsWithDetails = async () => {
     return Donation.find()
         .populate('userId', 'firstName lastName email')
@@ -20,7 +26,7 @@ export const createDonation = async (donationData: Partial<DonationInterface>) =
 
 export const updateDonationStatus = async (donationId: string, status: string) => {
     const donation = await Donation.findById(donationId);
-    
+
     if (!donation) {
         throw new Error("Donation not found");
     }

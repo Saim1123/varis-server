@@ -3,12 +3,13 @@ import { Request, Response } from "express";
 import * as DonationService from "../services/donation.service";
 import * as CloudinaryService from "../services/cloudinary.service";
 
-export const getDonations = async (_req: Request, res: Response) => {
+export const getDonations = async (req: Request, res: Response) => {
     try {
-        const donations = await DonationService.getAllDonations();
+        const userId = (req as any).user.id;
+        const donations = await DonationService.getUserDonations(userId);
 
         if (donations.length === 0) {
-            return res.status(404).json({ error: "No donations found" });
+            return res.status(200).json([]);
         }
 
         res.status(200).json(donations);

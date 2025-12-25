@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+
+export interface Expense {
+    _id?: string;
+    description: string;
+    amount: number;
+    date: Date;
+}
+
 export interface ProjectInterface {
     title: string;
     description: string;
@@ -9,5 +17,6 @@ export interface ProjectInterface {
     imageUrl: string;
     status: "active" | "inactive" | "pending";
     donations: mongoose.Types.ObjectId[];
+    expenses: Expense[];
     createdAt: Date;
 }

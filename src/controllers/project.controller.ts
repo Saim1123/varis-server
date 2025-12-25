@@ -36,7 +36,7 @@ export const getProject = async (req: Request, res: Response) => {
 
 export const createProject = async (req: Request, res: Response) => {
     try {
-        const project = await ProjectService.createProject(req.body);
+        const project = await ProjectService.createProject(req.body, req.file);
 
         res.status(201).json({
             message: "Project created successfully",
@@ -44,6 +44,25 @@ export const createProject = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error("Error creating project:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const updateProject = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const project = await ProjectService.updateProject(id, req.body, req.file);
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
+        res.status(200).json({
+            message: "Project updated successfully",
+            project,
+        });
+    } catch (error) {
+        console.error("Error updating project:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -64,6 +83,44 @@ export const deleteProjects = async (req: Request, res: Response) => {
         });
     } catch (error) {
         console.error("Error deleting projects:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const addExpense = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const project = await ProjectService.addExpense(id, req.body);
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
+        res.status(200).json({
+            message: "Expense added successfully",
+            project,
+        });
+    } catch (error) {
+        console.error("Error adding expense:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const deleteExpense = async (req: Request, res: Response) => {
+    try {
+        const { id, expenseId } = req.params;
+        const project = await ProjectService.deleteExpense(id, expenseId);
+
+        if (!project) {
+            return res.status(404).json({ error: "Project not found" });
+        }
+
+        res.status(200).json({
+            message: "Expense deleted successfully",
+            project,
+        });
+    } catch (error) {
+        console.error("Error deleting expense:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };

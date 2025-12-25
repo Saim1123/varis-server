@@ -7,7 +7,7 @@ import { upload } from "../config/multer";
 
 const router = express.Router();
 
-router.get("/", getDonations);
+router.get("/", authMiddleware, getDonations);
 router.get("/all", authMiddleware, adminMiddleware, getAllDonationsAdmin);
 router.post("/", upload.single("screenshot"), addDonation);
 router.patch("/:id/status", authMiddleware, adminMiddleware, updateDonationStatus);
