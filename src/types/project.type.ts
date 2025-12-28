@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+export enum ProjectCategory {
+    TREES = "Trees",
+    EDUCATION = "Education"
+}
 
 export interface Expense {
     _id?: string;
@@ -11,7 +15,7 @@ export interface Expense {
 export interface ProjectInterface {
     title: string;
     description: string;
-    category: string;
+    category: ProjectCategory;
     targetAmount: number;
     collectedAmount: number;
     imageUrl: string;

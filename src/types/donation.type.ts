@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+export interface TreesDonationPlan {
+    careType: "3_months" | "lifetime";
+    quantity: number;
+    unitPrice: number;
+}
+
+export interface EducationDonationPlan {
+    duration: "monthly" | "yearly";
+    studentsCount: number;
+    unitPrice: number;
+}
+
 export interface DonationInterface {
     userId?: mongoose.Types.ObjectId;
     projectId?: mongoose.Types.ObjectId;
@@ -16,5 +28,6 @@ export interface DonationInterface {
     donorAddress?: string;
     message?: string;
     isAnonymous?: boolean;
+    donationPlan?: TreesDonationPlan | EducationDonationPlan;
     createdAt: Date;
 }

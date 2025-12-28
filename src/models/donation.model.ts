@@ -18,6 +18,7 @@ const DonationSchema = new mongoose.Schema<DonationInterface>({
     donorAddress: { type: String },
     message: { type: String, default: "" },
     isAnonymous: { type: Boolean, default: false },
+    donationPlan: { type: mongoose.Schema.Types.Mixed },
     createdAt: { type: Date, default: Date.now },
 })
 

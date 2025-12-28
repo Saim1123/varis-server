@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
 
-import { ProjectInterface } from "../types/project.type";
+import { ProjectInterface, ProjectCategory } from "../types/project.type";
 
 const ProjectSchema = new mongoose.Schema<ProjectInterface>({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
+    category: { type: String, enum: Object.values(ProjectCategory), required: true },
     targetAmount: { type: Number, required: true },
     collectedAmount: { type: Number, required: true, default: 0 },
     imageUrl: { type: String, required: true },

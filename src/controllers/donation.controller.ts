@@ -49,6 +49,7 @@ export const addDonation = async (req: Request, res: Response) => {
             phoneNumber,
             userId,
             projectId,
+            donationPlan,
         } = req.body;
 
         if (!amount || !paymentMethod) {
@@ -64,6 +65,7 @@ export const addDonation = async (req: Request, res: Response) => {
             donorPhoneNumber: phoneNumber,
             userId: userId || undefined,
             projectId: projectId || undefined,
+            donationPlan: donationPlan ? JSON.parse(donationPlan) : undefined,
         };
 
         const donation = await DonationService.createDonation(donationData);
