@@ -4,7 +4,8 @@ import * as ProjectService from "../services/project.service";
 
 export const getProjects = async (req: Request, res: Response) => {
     try {
-        const projects = await ProjectService.getProjects();
+        const { category } = req.query;
+        const projects = await ProjectService.getProjects(category as string);
 
         if (!projects || projects.length === 0) {
             return res.status(404).json({ error: "No projects found" });

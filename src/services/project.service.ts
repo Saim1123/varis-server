@@ -5,8 +5,9 @@ import cloudinary from "../config/cloudinary";
 
 import Project from "../models/project.model";
 
-export const getProjects = async () => {
-    return Project.find().sort({ createdAt: -1 });
+export const getProjects = async (category?: string) => {
+    const filter = category ? { category } : {};
+    return Project.find(filter).sort({ createdAt: -1 });
 };
 
 export const getProject = async (projectId: string) => {
