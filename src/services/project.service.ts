@@ -32,21 +32,31 @@ const uploadImage = async (file: Express.Multer.File): Promise<string> => {
     });
 };
 
-export const createProject = async (data: any, file?: Express.Multer.File) => {
-    if (file) {
-        const imageUrl = await uploadImage(file);
-        data.imageUrl = imageUrl;
+export const createProject = async (data: any, files?: Express.Multer.File[]) => {
+    let imageUrls: string[] = [];
+    if (files && files.length > 0) {
+        const uploadPromises = files.map(file => uploadImage(file));
+        imageUrls = await Promise.all(uploadPromises);
     }
+    data.imageUrls = imageUrls;
     return Project.create(data);
 };
 
-export const updateProject = async (projectId: string, data: any, file?: Express.Multer.File) => {
-    if (file) {
-        const imageUrl = await uploadImage(file);
-        data.imageUrl = imageUrl;
+export const updateProject = async (projectId: string, data: any, files?: Express.Multer.File[]) => {
+    let newImageUrls: string[] = [];
+    if (files && files.length > 0) {
+        const uploadPromises = files.map(file => uploadImage(file));
+        newImageUrls = await Promise.all(uploadPromises);
     }
 
-    return Project.findByIdAndUpdate(projectId, data, { new: true });
+    let dbPayload: any = { ...data };
+
+    if (newImageUrls.length > 0) {
+        const existing = data.imageUrls ? (Array.isArray(data.imageUrls) ? data.imageUrls : [data.imageUrls]) : [];
+        dbPayload.imageUrls = [...existing, ...newImageUrls];
+    }
+
+    return Project.findByIdAndUpdate(projectId, dbPayload, { new: true });
 };
 
 export const deleteProjects = async (projectIds: string[]) => {

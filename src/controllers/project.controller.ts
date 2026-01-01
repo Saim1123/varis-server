@@ -37,7 +37,7 @@ export const getProject = async (req: Request, res: Response) => {
 
 export const createProject = async (req: Request, res: Response) => {
     try {
-        const project = await ProjectService.createProject(req.body, req.file);
+        const project = await ProjectService.createProject(req.body, req.files as Express.Multer.File[]);
 
         res.status(201).json({
             message: "Project created successfully",
@@ -52,7 +52,7 @@ export const createProject = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const project = await ProjectService.updateProject(id, req.body, req.file);
+        const project = await ProjectService.updateProject(id, req.body, req.files as Express.Multer.File[]);
 
         if (!project) {
             return res.status(404).json({ error: "Project not found" });

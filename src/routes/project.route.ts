@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.get("/", getProjects);
 router.get("/:id", getProject);
-router.post("/", authMiddleware, adminMiddleware, upload.single("image"), createProject);
-router.put("/:id", authMiddleware, adminMiddleware, upload.single("image"), updateProject);
+router.post("/", authMiddleware, adminMiddleware, upload.array("images", 5), createProject);
+router.put("/:id", authMiddleware, adminMiddleware, upload.array("images", 5), updateProject);
 router.delete("/bulk", authMiddleware, adminMiddleware, deleteProjects);
 
 router.post("/:id/expenses", authMiddleware, adminMiddleware, addExpense);

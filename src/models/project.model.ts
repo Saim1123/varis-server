@@ -8,7 +8,8 @@ const ProjectSchema = new mongoose.Schema<ProjectInterface>({
     category: { type: String, enum: Object.values(ProjectCategory), required: true },
     targetAmount: { type: Number, required: true },
     collectedAmount: { type: Number, required: true, default: 0 },
-    imageUrl: { type: String, required: true },
+    imageUrls: { type: [String], required: true },
+    imageUrl: { type: String },
     status: { type: String, required: true, default: "pending" },
     donations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Donation" }],
     expenses: [{

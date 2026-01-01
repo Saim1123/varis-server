@@ -1,6 +1,6 @@
 import cloudinary from "../config/cloudinary";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 
 export const validateImage = (file: Express.Multer.File) => {

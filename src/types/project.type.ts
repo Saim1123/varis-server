@@ -18,7 +18,8 @@ export interface ProjectInterface {
     category: ProjectCategory;
     targetAmount: number;
     collectedAmount: number;
-    imageUrl: string;
+    imageUrls: string[];
+    imageUrl?: string;
     status: "active" | "inactive" | "pending";
     donations: mongoose.Types.ObjectId[];
     expenses: Expense[];
