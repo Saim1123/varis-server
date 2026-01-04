@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 export enum ProjectCategory {
     TREES = "Trees",
-    EDUCATION = "Education"
+    EDUCATION = "Education",
+    AGRICULTURE = "Agriculture"
 }
 
 export interface Expense {
