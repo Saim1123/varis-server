@@ -16,9 +16,12 @@ export const getAllUsers = async () => {
   return User.find().sort({ createdAt: -1 });
 };
 
-export const createUser = async (userData: UserData) => {
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  userData.password = hashedPassword;
+export const createUser = async (userData: UserData & { googleId?: string; authProvider?: 'local' | 'google' }) => {
+  // Only hash password if it's provided (not for Google OAuth users)
+  if (userData.password) {
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
+  }
 
   const newUser = new User(userData);
   return await newUser.save();
@@ -33,7 +36,12 @@ export const loginUser = async (userData: {
     return null;
   }
 
-  const isMatch = await bcrypt.compare(userData.password, user.password); // saim123, asdfasdfasdf
+  // Skip password check for Google OAuth users
+  if (user.authProvider === 'google') {
+    return false; // Google users should use Google login
+  }
+
+  const isMatch = await bcrypt.compare(userData.password, user.password);
   if (!isMatch) {
     return false;
   }
@@ -67,7 +75,7 @@ export const getUserById = async (userId: string) => {
 
 export const updateUserProfile = async (
   userId: string,
-  updateData: { country?: string; city?: string; address?: string },
+  updateData: { country?: string; city?: string; address?: string; googleId?: string; authProvider?: 'local' | 'google' },
 ) => {
   const user = await User.findByIdAndUpdate(
     userId,

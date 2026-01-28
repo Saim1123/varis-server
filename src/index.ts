@@ -5,10 +5,12 @@ import morgan from "morgan";
 
 import { config } from "./config/env";
 import { connectToDB } from "./config/db";
+import passport from "./config/passport";
 
 import userRoutes from "./routes/user.route";
 import projectRoutes from "./routes/project.route";
 import donationRoutes from "./routes/donation.route";
+import authRoutes from "./routes/auth.route";
 
 const app = express();
 
@@ -23,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 app.use(morgan('dev'));
+app.use(passport.initialize());
 
 app.get("/health", (req: Request, res: Response) => {
     res.status(200).json({
@@ -31,6 +34,7 @@ app.get("/health", (req: Request, res: Response) => {
     });
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/donations", donationRoutes);

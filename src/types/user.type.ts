@@ -9,4 +9,6 @@ export interface UserInterface {
     address: string;
     role: 'admin' | 'user' | 'system';
     createdAt: Date;
+    googleId?: string;
+    authProvider?: 'local' | 'google';
 }
