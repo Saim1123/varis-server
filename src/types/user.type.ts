@@ -7,6 +7,6 @@ export interface UserInterface {
     country: string;
     city: string;
     address: string;
-    role: 'admin' | 'user';
+    role: 'admin' | 'user' | 'system';
     createdAt: Date;
 }
