@@ -30,7 +30,7 @@ app.use(passport.initialize());
 app.get("/health", (req: Request, res: Response) => {
     res.status(200).json({
         status: "ok",
-        message: "Server is running!"
+        message: "Server is running"
     });
 });
 
