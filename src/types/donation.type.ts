@@ -7,8 +7,30 @@ export interface TreesDonationPlan {
 }
 
 export interface EducationDonationPlan {
-    duration: "monthly" | "yearly";
-    studentsCount: number;
+    duration: "monthly" | "yearly" | "one_time";
+    planType: "educate_child" | "back_to_school" | "sponsor_classroom" | "support_school";
+    count: number;
+    unitPrice: number;
+}
+
+export interface AgricultureDonationPlan {
+    duration: "one_time" | "monthly" | "yearly";
+    planType: "seeds" | "crops" | "tools" | "irrigation";
+    count: number;
+    unitPrice: number;
+}
+
+export interface AnimalFarmingDonationPlan {
+    duration: "one_time" | "monthly" | "yearly";
+    planType: "feed" | "medical" | "livestock" | "sponsor";
+    count: number;
+    unitPrice: number;
+}
+
+export interface PlantationDonationPlan {
+    duration: "one_time" | "monthly" | "yearly";
+    planType: "plant_tree" | "green_pakistan" | "adopt_tree" | "community";
+    count: number;
     unitPrice: number;
 }
 
@@ -28,6 +50,7 @@ export interface DonationInterface {
     donorAddress?: string;
     message?: string;
     isAnonymous?: boolean;
-    donationPlan?: TreesDonationPlan | EducationDonationPlan;
+    donationPlan?: TreesDonationPlan | EducationDonationPlan | AgricultureDonationPlan | AnimalFarmingDonationPlan | PlantationDonationPlan;
     createdAt: Date;
+
 }
