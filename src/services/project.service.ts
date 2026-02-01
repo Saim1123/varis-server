@@ -33,12 +33,35 @@ const uploadImage = async (file: Express.Multer.File): Promise<string> => {
 };
 
 export const createProject = async (data: any, files?: Express.Multer.File[]) => {
-    let imageUrls: string[] = [];
+    let newImageUrls: string[] = [];
     if (files && files.length > 0) {
         const uploadPromises = files.map(file => uploadImage(file));
-        imageUrls = await Promise.all(uploadPromises);
+        newImageUrls = await Promise.all(uploadPromises);
     }
-    data.imageUrls = imageUrls;
+
+    let finalImageUrls: string[] = [];
+
+    if (data.imageUrls && Array.isArray(data.imageUrls)) {
+        finalImageUrls = data.imageUrls.map((url: string) => {
+            if (url.startsWith('new-image-')) {
+                const index = parseInt(url.split('new-image-')[1]);
+                return newImageUrls[index];
+            }
+            return url;
+        });
+    } else if (typeof data.imageUrls === 'string') {
+        if (data.imageUrls.startsWith('new-image-')) {
+            const index = parseInt(data.imageUrls.split('new-image-')[1]);
+            finalImageUrls = [newImageUrls[index]];
+        } else {
+            finalImageUrls = [data.imageUrls];
+        }
+    }
+    else {
+        finalImageUrls = newImageUrls;
+    }
+
+    data.imageUrls = finalImageUrls.filter(url => url);
     return Project.create(data);
 };
 
@@ -50,12 +73,29 @@ export const updateProject = async (projectId: string, data: any, files?: Expres
     }
 
     let dbPayload: any = { ...data };
+    let finalImageUrls: string[] = [];
 
-    if (newImageUrls.length > 0) {
-        const existing = data.imageUrls ? (Array.isArray(data.imageUrls) ? data.imageUrls : [data.imageUrls]) : [];
-        dbPayload.imageUrls = [...existing, ...newImageUrls];
+    if (data.imageUrls) {
+        const providedUrls = Array.isArray(data.imageUrls) ? data.imageUrls : [data.imageUrls];
+
+        finalImageUrls = providedUrls.map((url: string) => {
+            if (url.startsWith('new-image-')) {
+                const index = parseInt(url.split('new-image-')[1]);
+                return newImageUrls[index];
+            }
+            return url;
+        });
+
+        dbPayload.imageUrls = finalImageUrls.filter((url: string) => url);
+    } else if (newImageUrls.length > 0) {
+        // The old behavior code:
+        /*
+           if (newImageUrls.length > 0) {
+               const existing = data.imageUrls ? (Array.isArray(data.imageUrls) ? data.imageUrls : [data.imageUrls]) : [];
+               dbPayload.imageUrls = [...existing, ...newImageUrls];
+           }
+        */
     }
-
     return Project.findByIdAndUpdate(projectId, dbPayload, { new: true });
 };
 
