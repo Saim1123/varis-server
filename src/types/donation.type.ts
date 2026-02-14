@@ -34,6 +34,13 @@ export interface PlantationDonationPlan {
     unitPrice: number;
 }
 
+export interface WaterFiltrationDonationPlan {
+    duration: "one_time" | "monthly" | "yearly";
+    planType: "water_boring" | "hand_pump" | "water_filter_plant" | "home_filter_units" | "water_maintenance";
+    count: number;
+    unitPrice: number;
+}
+
 export interface DonationInterface {
     userId?: mongoose.Types.ObjectId;
     projectId?: mongoose.Types.ObjectId;
@@ -50,7 +57,7 @@ export interface DonationInterface {
     donorAddress?: string;
     message?: string;
     isAnonymous?: boolean;
-    donationPlan?: TreesDonationPlan | EducationDonationPlan | AgricultureDonationPlan | AnimalFarmingDonationPlan | PlantationDonationPlan;
+    donationPlan?: TreesDonationPlan | EducationDonationPlan | AgricultureDonationPlan | AnimalFarmingDonationPlan | PlantationDonationPlan | WaterFiltrationDonationPlan;
     createdAt: Date;
 
 }

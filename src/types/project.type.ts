@@ -5,7 +5,8 @@ export enum ProjectCategory {
     EDUCATION = "Education",
     AGRICULTURE = "Agriculture",
     ANIMAL_FARMING = "Animal Farming",
-    PLANTATION = "Plantation"
+    PLANTATION = "Plantation",
+    WATER = "Water Filtration"
 }
 
 export interface Expense {
